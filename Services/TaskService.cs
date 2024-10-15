@@ -86,5 +86,28 @@ namespace Task_CLI.Services
                 "clear - To clear console window"
             };
         }
+
+        private static bool CreateFileIfNotExist()
+        {
+            try
+            {
+                // Check if the file exists
+                if (!File.Exists(FilePath))
+                {
+                    // Create the file if it does not exist
+                    using (FileStream fs = File.Create(FilePath))
+                    {
+                        Console.WriteLine($"File {FileName} created successfully.");
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"File {FileName} creation failed. Error - " + ex.Message);
+                return false;
+            }
+        }
     }
 }
