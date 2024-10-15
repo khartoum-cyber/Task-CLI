@@ -44,7 +44,7 @@ namespace Task_CLI.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Task addition failed. Error - " + ex.Message);
+                Console.WriteLine("Task addition failed. Error - " + ex.Message);
                 return Task.FromResult(0);
             }
         }

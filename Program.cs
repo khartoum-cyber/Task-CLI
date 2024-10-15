@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.Design;
-using System.Windows.Input;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Task_CLI.Helpers;
 using Task_CLI.Interfaces;
 using Task_CLI.Services;
@@ -59,6 +57,11 @@ void AddNewTask()
         return;
 
     var taskAdded = _taskService?.AddNewTask(commands[1]);
+
+    if (taskAdded != null && taskAdded.Result != 0)
+        Helper.PrintInfoMessage($"Task added successfully with Id : {taskAdded.Result}");
+    else
+        Helper.PrintInfoMessage("Task not saved!");
 }
 
 bool IsUserInputValid(List<string> commands, int requiredParameter)
