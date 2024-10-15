@@ -4,11 +4,11 @@ namespace Task_CLI
 {
     internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             while (true)
             {
-                Console.WriteLine("Enter command : ");
+                Helper.PrintCommandMessage("Enter command : ");
 
                 var input = Console.ReadLine() ?? string.Empty;
 
@@ -17,6 +17,8 @@ namespace Task_CLI
                     Helper.PrintInfoMessage("No input detected, try again !");
                     continue;
                 }
+
+                var commands = Helper.InputParser(input);
 
                 var exit = false;
 

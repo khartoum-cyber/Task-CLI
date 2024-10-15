@@ -1,4 +1,6 @@
-﻿namespace Task_CLI.Helpers
+﻿using System.Text.RegularExpressions;
+
+namespace Task_CLI.Helpers
 {
     internal static class Helper
     {
@@ -7,6 +9,30 @@
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("\n" + message);
             Console.ResetColor();
+        }
+
+        internal static void PrintCommandMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("\n" + message + "\n");
+            Console.ResetColor();
+        }
+
+        internal static List<string> InputParser(string input)
+        {
+            var commandArgs = new List<string>();
+
+            var regex = new Regex(@"[\""].+?[\""]|[^ ]+");
+            var matches = regex.Matches(input);
+
+            foreach (Match match in matches)
+            {
+                // Remove surrounding quotes if any
+                var value = match.Value.Trim('"');
+                commandArgs.Add(value);
+            }
+
+            return commandArgs;
         }
     }
 }
