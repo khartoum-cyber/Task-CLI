@@ -1,9 +1,12 @@
-﻿using Task_CLI.Helpers;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Task_CLI.Helpers;
+using Task_CLI.Services;
 
 namespace Task_CLI
 {
     internal class Program
     {
+        private var serviceCollection = new ServiceCollection();
         private static void Main(string[] args)
         {
             WelcomeMessage();
