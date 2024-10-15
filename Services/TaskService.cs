@@ -4,6 +4,11 @@ namespace Task_CLI.Services
 {
     public class TaskService : ITaskService
     {
+        public Task<int> AddNewTask(string description)
+        {
+            var appTasks = new List<>();
+        }
+
         public List<string> GetAllHelpCommands()
         {
             return new List<string>
