@@ -6,6 +6,8 @@ namespace Task_CLI
     {
         private static void Main(string[] args)
         {
+            WelcomeMessage();
+
             while (true)
             {
                 Helper.PrintCommandMessage("Enter command : ");
@@ -20,12 +22,14 @@ namespace Task_CLI
 
                 var commands = Helper.InputParser(input);
 
+                var command = commands[0].ToLower();
+
                 var exit = false;
 
-                switch (input)
+                switch (command)
                 {
                     case "help":
-                        Console.WriteLine("HELP !");
+                        HelpMessage();
                         break;
                     case "exit":
                         exit = true;
@@ -40,6 +44,17 @@ namespace Task_CLI
                     break;
                 }
             }
+        }
+
+        private static void HelpMessage()
+        {
+            var helpCommands = _taskService?.GetAllHelpCommands();
+        }
+
+        private static void WelcomeMessage()
+        {
+            Helper.PrintInfoMessage("Hello, Welcome to Task Tracker!");
+            Helper.PrintInfoMessage("Type \"help\" to know the set of commands");
         }
     }
 }

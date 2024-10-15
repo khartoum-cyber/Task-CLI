@@ -6,14 +6,14 @@ namespace Task_CLI.Helpers
     {
         internal static void PrintInfoMessage(string message)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("\n" + message);
             Console.ResetColor();
         }
 
         internal static void PrintCommandMessage(string message)
         {
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("\n" + message + "\n");
             Console.ResetColor();
         }
