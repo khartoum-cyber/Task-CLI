@@ -2,7 +2,7 @@
 
 namespace Task_CLI.Services
 {
-    internal class TaskService : ITaskService
+    public class TaskService : ITaskService
     {
         public List<string> GetAllHelpCommands()
         {

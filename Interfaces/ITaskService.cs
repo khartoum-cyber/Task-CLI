@@ -1,6 +1,6 @@
 ﻿namespace Task_CLI.Interfaces
 {
-    internal interface ITaskService
+    public interface ITaskService
     {
         List<string> GetAllHelpCommands();
     }

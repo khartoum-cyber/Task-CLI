@@ -11,6 +11,13 @@ namespace Task_CLI.Helpers
             Console.ResetColor();
         }
 
+        public static void PrintHelpMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("\n" + message);
+            Console.ResetColor();
+        }
+
         internal static void PrintCommandMessage(string message)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
