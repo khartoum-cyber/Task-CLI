@@ -1,10 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.ComponentModel.Design;
+using System.Windows.Input;
+using Microsoft.Extensions.DependencyInjection;
 using Task_CLI.Helpers;
 using Task_CLI.Interfaces;
 using Task_CLI.Services;
 
 var serviceProvider = new ServiceCollection().AddSingleton<ITaskService, TaskService>().BuildServiceProvider();
 var _taskService = serviceProvider.GetService<ITaskService>();
+
+List<string> commands;
 
 WelcomeMessage();
 
@@ -20,7 +24,7 @@ while (true)
         continue;
     }
 
-    var commands = Helper.InputParser(input);
+    commands = Helper.InputParser(input);
 
     var command = commands[0].ToLower();
 
@@ -36,6 +40,10 @@ while (true)
             exit = true;
             break;
 
+        case "add":
+            AddNewTask();
+            break;
+
         default:
             break;
     }
@@ -44,6 +52,52 @@ while (true)
     {
         break;
     }
+}
+void AddNewTask()
+{
+    if (!IsUserInputValid(commands, 2))
+        return;
+
+    var taskAdded = _taskService?.AddNewTask(commands[1]);
+}
+
+bool IsUserInputValid(List<string> commands, int requiredParameter)
+{
+    bool validInput = true;
+
+    if (requiredParameter == 1)
+    {
+        if (commands.Count != requiredParameter)
+        {
+            validInput = false;
+        }
+    }
+
+    if (requiredParameter == 2)
+    {
+        if (commands.Count != requiredParameter || string.IsNullOrEmpty(commands[1]))
+        {
+            validInput = false;
+        }
+    }
+
+    if (requiredParameter == 3)
+    {
+        if (commands.Count != requiredParameter || string.IsNullOrEmpty(commands[1]) || string.IsNullOrEmpty(commands[2]))
+        {
+            validInput = false;
+        }
+    }
+
+    if (!validInput)
+    {
+
+        Helper.PrintErrorMessage("Wrong command! Try again.");
+        Helper.PrintInfoMessage("Type \"help\" to know the set of commands");
+        return false;
+    }
+
+    return true;
 }
 
 void HelpMessage()
