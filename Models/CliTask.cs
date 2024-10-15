@@ -1,4 +1,6 @@
-﻿namespace Task_CLI.Models
+﻿using Task_CLI.Enums;
+
+namespace Task_CLI.Models
 {
     internal class CliTask
     {

@@ -1,12 +1,72 @@
-﻿using Task_CLI.Interfaces;
+﻿using System.Text.Json;
+using Task_CLI.Interfaces;
+using Task_CLI.Models;
 
 namespace Task_CLI.Services
 {
     public class TaskService : ITaskService
     {
+        private static readonly string FileName = "cli_task_data.json";
+
+        private static readonly string FilePath = Path.Combine(Directory.GetCurrentDirectory(), FileName);
+
         public Task<int> AddNewTask(string description)
         {
-            var appTasks = new List<CliTask>();
+            try
+            {
+                var appTasks = new List<CliTask>();
+                var task = new CliTask
+                {
+                    Id = GetTaskId(),
+                    Description = description,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    TaskStatus = Enums.Status.todo
+                };
+
+                var fileCreatedSuccessfully = CreateFileIfNotExist();
+
+                if (fileCreatedSuccessfully)
+                {
+                    string tasksFromJsonFileString = File.ReadAllText(FilePath);
+                    if (!string.IsNullOrEmpty(tasksFromJsonFileString))
+                    {
+                        appTasks = JsonSerializer.Deserialize<List<CliTask>>(tasksFromJsonFileString);
+                    }
+
+                    appTasks?.Add(task);
+                    var updatedAppTasks = JsonSerializer.Serialize(appTasks ?? new List<CliTask>());
+                    File.WriteAllText(FilePath, updatedAppTasks);
+                    return Task.FromResult(task.Id);
+                }
+
+                return Task.FromResult(0);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Task addition failed. Error - " + ex.Message);
+                return Task.FromResult(0);
+            }
+        }
+
+        private int GetTaskId()
+        {
+            if (!File.Exists(FilePath))
+            {
+                return 1;
+            }
+
+            string tasksFromJsonFileString = File.ReadAllText(FilePath);
+
+            if (!string.IsNullOrEmpty(tasksFromJsonFileString))
+            {
+                var appTasks = JsonSerializer.Deserialize<List<CliTask>>(tasksFromJsonFileString);
+                if (appTasks != null && appTasks.Count > 0)
+                {
+                    return appTasks.OrderBy(x => x.Id).Last().Id + 1;
+                }
+            }
+            return 1;
         }
 
         public List<string> GetAllHelpCommands()
