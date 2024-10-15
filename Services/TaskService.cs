@@ -6,7 +6,7 @@ namespace Task_CLI.Services
     {
         public Task<int> AddNewTask(string description)
         {
-            var appTasks = new List<>();
+            var appTasks = new List<CliTask>();
         }
 
         public List<string> GetAllHelpCommands()
