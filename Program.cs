@@ -42,6 +42,10 @@ while (true)
             AddNewTask();
             break;
 
+        case "update":
+            UpdateTask();
+            break;
+
         default:
             break;
     }
@@ -51,6 +55,31 @@ while (true)
         break;
     }
 }
+
+void UpdateTask()
+{
+    if (!IsUserInputValid(commands, 3))
+        return;
+
+    var id = IsValidIdProvided(commands, 0).Item2;
+
+    if (id == 0)
+    {
+        return;
+    }
+
+    var result = _taskService?.UpdateTask(id, commands[2]).Result;
+
+    if (result != null && result.Value)
+    {
+        Helper.PrintInfoMessage($"Task updated successfully with Id : {id}");
+    }
+    else
+    {
+        Helper.PrintInfoMessage($"Task with Id : {id}, does not exist!");
+    }
+}
+
 void AddNewTask()
 {
     if (!IsUserInputValid(commands, 2))
@@ -121,4 +150,18 @@ static void WelcomeMessage()
 {
     Helper.PrintInfoMessage("Hello, Welcome to Task Tracker!");
     Helper.PrintInfoMessage("Type \"help\" to know the set of commands");
+}
+
+static Tuple<bool, int> IsValidIdProvided(List<string> commands, int id)
+{
+    int.TryParse(commands[1], out id);
+
+    if (id == 0)
+    {
+        Helper.PrintErrorMessage("Wrong command! Try again.");
+        Helper.PrintInfoMessage("Type \"help\" to know the set of commands");
+        return new Tuple<bool, int>(false, id);
+    }
+
+    return new Tuple<bool, int>(true, id);
 }

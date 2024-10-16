@@ -49,6 +49,28 @@ namespace Task_CLI.Services
             }
         }
 
+        public Task<bool> UpdateTask(int id, string description)
+        {
+            if (!File.Exists(FilePath))
+            {
+                return Task.FromResult(false);
+            }
+
+            var tasksFromJson = GetTasksFromJson();
+        }
+
+        private static Task<List<CliTask>> GetTasksFromJson()
+        {
+            string tasksFromJsonFileString = File.ReadAllText(FilePath);
+
+            if (!string.IsNullOrEmpty(tasksFromJsonFileString))
+            {
+                return Task.FromResult(JsonSerializer.Deserialize<List<CliTask>>(tasksFromJsonFileString));
+            }
+
+            return Task.FromResult(new List<CliTask>());
+        }
+
         private int GetTaskId()
         {
             if (!File.Exists(FilePath))
