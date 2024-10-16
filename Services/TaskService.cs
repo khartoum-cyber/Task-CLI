@@ -57,6 +57,37 @@ namespace Task_CLI.Services
             }
 
             var tasksFromJson = GetTasksFromJson();
+
+            if (tasksFromJson.Result.Count > 0)
+            {
+                var taskToBeUpdated = tasksFromJson.Result
+                    .SingleOrDefault(x => x.Id == id);
+
+                if (taskToBeUpdated != null)
+                {
+                    var updatedTask = new CliTask
+                    {
+                        Id = id,
+                        Description = description,
+                        CreatedAt = taskToBeUpdated.CreatedAt,
+                        UpdatedAt = DateTime.UtcNow,
+                        TaskStatus = taskToBeUpdated.TaskStatus
+                    };
+
+                    tasksFromJson.Result.Remove(taskToBeUpdated);
+                    tasksFromJson.Result.Add(updatedTask);
+                    UpdateJsonFile(tasksFromJson);
+                    return Task.FromResult(true);
+                }
+            }
+
+            return Task.FromResult(false);
+        }
+
+        private static void UpdateJsonFile(Task<List<CliTask>> tasksFromJson)
+        {
+            string updatedAppTasks = JsonSerializer.Serialize(tasksFromJson.Result);
+            File.WriteAllText(FilePath, updatedAppTasks);
         }
 
         private static Task<List<CliTask>> GetTasksFromJson()
