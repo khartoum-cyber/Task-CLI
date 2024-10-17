@@ -228,3 +228,40 @@ static Tuple<bool, int> IsValidIdProvided(List<string> commands, int id)
 
     return new Tuple<bool, int>(true, id);
 }
+
+static void CreateTaskTable(List<CliTask> tasks)
+{
+    int colWidth1 = 15, colWidth2 = 35, colWidth3 = 15, colWidth4 = 15;
+    if (tasks != null && tasks.Count > 0)
+    {
+        Console.WriteLine("\n{0,-" + colWidth1 + "} {1,-" + colWidth2 + "} {2,-" + colWidth3 + "} {3,-" + colWidth4 + "}",
+            "Task Id", "Description", "Status", "Created Date" + "\n");
+
+        foreach (var task in tasks)
+        {
+            SetConsoleTextColor(task);
+            Console.WriteLine("{0,-" + colWidth1 + "} {1,-" + colWidth2 + "} {2,-" + colWidth3 + "} {3,-" + colWidth4 + "}"
+                , task.Id, task.Description, task.TaskStatus, task.CreatedAt.Date.ToString("dd-MM-yyyy"));
+            Console.ResetColor();
+        }
+    }
+    else
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("\n No Task exists! \n");
+        Console.ResetColor();
+
+        Console.WriteLine("{0,-" + colWidth1 + "} {1,-" + colWidth2 + "} {2,-" + colWidth3 + "} {3,-" + colWidth4 + "}",
+            "Task Id", "Description", "Status", "CreatedDate");
+    }
+}
+
+static void SetConsoleTextColor(CliTask task)
+{
+    Console.ForegroundColor = task.TaskStatus switch
+    {
+        Task_CLI.Enums.Status.Todo => ConsoleColor.Magenta,
+        Task_CLI.Enums.Status.Done => ConsoleColor.Green,
+        _ => ConsoleColor.Yellow
+    };
+}
