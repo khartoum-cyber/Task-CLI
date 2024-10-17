@@ -83,6 +83,30 @@ namespace Task_CLI.Services
 
             return Task.FromResult(false);
         }
+        public Task<bool> DeleteTask(int id)
+        {
+            if (!File.Exists(FilePath))
+            {
+                return Task.FromResult(false);
+            }
+
+            var tasksFromJson = GetTasksFromJson();
+
+            if (tasksFromJson.Result.Count > 0)
+            {
+                var taskToBeDeleted = tasksFromJson.Result
+                    .SingleOrDefault(x => x.Id == id);
+
+                if (taskToBeDeleted != null)
+                {
+                    tasksFromJson.Result.Remove(taskToBeDeleted);
+                    UpdateJsonFile(tasksFromJson);
+                    return Task.FromResult(true);
+                }
+            }
+
+            return Task.FromResult(false);
+        }
 
         private static void UpdateJsonFile(Task<List<CliTask>> tasksFromJson)
         {
@@ -162,5 +186,6 @@ namespace Task_CLI.Services
                 return false;
             }
         }
+
     }
 }

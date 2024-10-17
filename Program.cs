@@ -46,13 +46,41 @@ while (true)
             UpdateTask();
             break;
 
-        default:
+        case "delete":
+            DeleteTask();
             break;
+
+        //default:
+        //    break;
     }
 
     if (exit)
     {
         break;
+    }
+}
+
+void DeleteTask()
+{
+    if (!IsUserInputValid(commands, 2))
+        return;
+
+    var id = IsValidIdProvided(commands, 0).Item2;
+
+    if (id == 0)
+    {
+        return;
+    }
+
+    var taskDeleted = _taskService?.DeleteTask(id).Result;
+
+    if (taskDeleted != null && taskDeleted.Value)
+    {
+        Helper.PrintInfoMessage($"Task deleted successfully with Id : {id}");
+    }
+    else
+    {
+        Helper.PrintInfoMessage($"Task with Id : {id}, does not exist!");
     }
 }
 

@@ -36,6 +36,7 @@ namespace Task_CLI.Helpers
         {
             var commandArgs = new List<string>();
 
+            // Regex to match arguments, including those inside quotes
             var regex = new Regex(@"[\""].+?[\""]|[^ ]+");
             var matches = regex.Matches(input);
 
