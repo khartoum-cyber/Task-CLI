@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Task_CLI.Enums;
 using Task_CLI.Interfaces;
 using Task_CLI.Models;
 
@@ -21,7 +22,7 @@ namespace Task_CLI.Services
                     Description = description,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
-                    TaskStatus = Enums.Status.todo
+                    TaskStatus = Enums.Status.Todo
                 };
 
                 var fileCreatedSuccessfully = CreateFileIfNotExist();
@@ -150,6 +151,14 @@ namespace Task_CLI.Services
 
             return Task.FromResult(new List<CliTask>());
         }
+
+        private Status GetStatusToDisplay(string status) => status switch
+        {
+            "ToDo" => Status.Todo,
+            "InProgress" => Status.InProgress,
+            "Done" => Status.Done,
+            _ => throw new NotImplementedException()
+        };
 
         private static void UpdateJsonFile(Task<List<CliTask>> tasksFromJson)
         {
