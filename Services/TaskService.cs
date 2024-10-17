@@ -132,6 +132,25 @@ namespace Task_CLI.Services
             }
         }
 
+        public Task<List<CliTask>> GetTaskByStatus(string status)
+        {
+            if (!File.Exists(FilePath))
+            {
+                return Task.FromResult(new List<CliTask>());
+            }
+
+            string jsonString = File.ReadAllText(FilePath);
+
+            if (!string.IsNullOrEmpty(jsonString))
+            {
+                var tasks = JsonSerializer.Deserialize<List<CliTask>>(jsonString);
+                var statusToCheck = GetStatusToDisplay(status);
+                return Task.FromResult(tasks?.Where(x => x.TaskStatus == statusToCheck).ToList() ?? new List<CliTask>());
+            }
+
+            return Task.FromResult(new List<CliTask>());
+        }
+
         private static void UpdateJsonFile(Task<List<CliTask>> tasksFromJson)
         {
             string updatedAppTasks = JsonSerializer.Serialize(tasksFromJson.Result);
