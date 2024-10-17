@@ -107,6 +107,30 @@ namespace Task_CLI.Services
 
             return Task.FromResult(false);
         }
+        public Task<List<CliTask>> ListAllTasks()
+        {
+            try
+            {
+                if (!File.Exists(FilePath))
+                {
+                    return Task.FromResult(new List<CliTask>());
+                }
+
+                string jsonString = File.ReadAllText(FilePath);
+
+                if (!string.IsNullOrEmpty(jsonString))
+                {
+                    List<CliTask> tasks = JsonSerializer.Deserialize<List<CliTask>>(jsonString);
+                    return Task.FromResult(tasks);
+                }
+
+                return Task.FromResult(new List<CliTask>());
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         private static void UpdateJsonFile(Task<List<CliTask>> tasksFromJson)
         {
@@ -186,6 +210,5 @@ namespace Task_CLI.Services
                 return false;
             }
         }
-
     }
 }

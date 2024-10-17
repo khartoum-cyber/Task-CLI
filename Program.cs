@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Security.Cryptography.X509Certificates;
+using Microsoft.Extensions.DependencyInjection;
 using Task_CLI.Helpers;
 using Task_CLI.Interfaces;
+using Task_CLI.Models;
 using Task_CLI.Services;
 
 var serviceProvider = new ServiceCollection().AddSingleton<ITaskService, TaskService>().BuildServiceProvider();
@@ -50,6 +52,10 @@ while (true)
             DeleteTask();
             break;
 
+        case "list":
+            ListAllTasks();
+            break;
+
         //default:
         //    break;
     }
@@ -58,6 +64,35 @@ while (true)
     {
         break;
     }
+}
+
+void ListAllTasks()
+{
+    if (commands.Count > 2)
+    {
+        Helper.PrintErrorMessage("Wrong command! Try again.");
+        Helper.PrintInfoMessage("Type \"help\" to know the set of commands");
+        return;
+    }
+
+    var tasks = new List<CliTask>();
+
+    if (commands.Count == 1)
+    {
+        tasks = _taskService?.ListAllTasks().Result.OrderBy(x => x.Id).ToList() ?? tasks;
+    }
+    else
+    {
+        if (!commands[1].ToLower().Equals("in-progress") && !commands[1].ToLower().Equals("done") && !commands[1].ToLower().Equals("todo"))
+        {
+            Helper.PrintErrorMessage("Wrong command! Try again.");
+            Helper.PrintInfoMessage("Type \"help\" to know the set of commands");
+            return;
+        }
+        tasks = _taskService?.GetTaskByStatus(commands[1]).Result.OrderBy(x => x.Id).ToList() ?? tasks;
+    }
+
+    CreateTaskTable(tasks);
 }
 
 void DeleteTask()

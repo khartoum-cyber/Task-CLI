@@ -1,6 +1,6 @@
 ﻿namespace Task_CLI.Enums
 {
-    internal enum Status
+    public enum Status
     {
         todo,
         in_progress,
