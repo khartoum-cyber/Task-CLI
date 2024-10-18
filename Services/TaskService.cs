@@ -22,7 +22,7 @@ namespace Task_CLI.Services
                     Description = description,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
-                    TaskStatus = Enums.Status.Todo
+                    TaskStatus = Status.ToDo
                 };
 
                 var fileCreatedSuccessfully = CreateFileIfNotExist();
@@ -134,7 +134,37 @@ namespace Task_CLI.Services
         }
         public Task<bool> SetTaskStatus(string status, int id)
         {
-            throw new NotImplementedException();
+            if (!File.Exists(FilePath))
+            {
+                return Task.FromResult(false);
+            }
+
+            var tasksFromJson = GetTasksFromJson();
+
+            if (tasksFromJson.Result.Count > 0)
+            {
+                var statusToBeUpdated = tasksFromJson.Result
+                    .SingleOrDefault(x => x.Id == id);
+
+                if (statusToBeUpdated != null)
+                {
+                    var updatedTask = new CliTask
+                    {
+                        Id = id,
+                        Description = statusToBeUpdated.Description,
+                        CreatedAt = statusToBeUpdated.CreatedAt,
+                        UpdatedAt = DateTime.UtcNow,
+                        TaskStatus = GetStatusToDisplay(status)
+                    };
+
+                    tasksFromJson.Result.Remove(statusToBeUpdated);
+                    tasksFromJson.Result.Add(updatedTask);
+                    UpdateJsonFile(tasksFromJson);
+                    return Task.FromResult(true);
+                }
+            }
+
+            return Task.FromResult(false);
         }
         public Task<List<CliTask>> GetTaskByStatus(string status)
         {
@@ -157,10 +187,10 @@ namespace Task_CLI.Services
 
         private Status GetStatusToDisplay(string status) => status switch
         {
-            "ToDo" => Status.Todo,
-            "InProgress" => Status.InProgress,
-            "Done" => Status.Done,
-            _ => throw new NotImplementedException()
+            "mark-todo" => Status.ToDo,
+            "mark-in-progress" => Status.InProgress,
+            "mark-done" => Status.Done,
+            _ => Status.ToDo
         };
 
         private static void UpdateJsonFile(Task<List<CliTask>> tasksFromJson)

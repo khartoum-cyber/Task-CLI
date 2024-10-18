@@ -67,6 +67,7 @@ while (true)
         case "mark-done":
             SetTaskStatus();
             break;
+
             //default:
             //    break;
     }
@@ -89,7 +90,16 @@ void SetTaskStatus()
         return;
     }
 
-    var statusChanges = _taskService?.SetTaskStatus(commands[0], id).Result;
+    var statusChanged = _taskService?.SetTaskStatus(commands[0], id).Result;
+
+    if (statusChanged != null && statusChanged.Value)
+    {
+        Helper.PrintInfoMessage($"Status for task Id : {id} changed.");
+    }
+    else
+    {
+        Helper.PrintInfoMessage($"Task with Id : {id}, does not exist!");
+    }
 }
 
 void ListAllTasks()
@@ -286,7 +296,7 @@ static void SetConsoleTextColor(CliTask task)
 {
     Console.ForegroundColor = task.TaskStatus switch
     {
-        Task_CLI.Enums.Status.Todo => ConsoleColor.Magenta,
+        Task_CLI.Enums.Status.ToDo => ConsoleColor.Magenta,
         Task_CLI.Enums.Status.Done => ConsoleColor.Green,
         _ => ConsoleColor.Yellow
     };
