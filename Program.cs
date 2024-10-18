@@ -56,14 +56,40 @@ while (true)
             ListAllTasks();
             break;
 
-        //default:
-        //    break;
+        case "mark-in-progress":
+            SetTaskStatus();
+            break;
+
+        case "mark-todo":
+            SetTaskStatus();
+            break;
+
+        case "mark-done":
+            SetTaskStatus();
+            break;
+            //default:
+            //    break;
     }
 
     if (exit)
     {
         break;
     }
+}
+
+void SetTaskStatus()
+{
+    if (!IsUserInputValid(commands, 2))
+        return;
+
+    var id = IsValidIdProvided(commands, 0).Item2;
+
+    if (id == 0)
+    {
+        return;
+    }
+
+    var statusChanges = _taskService?.SetTaskStatus(commands[0], id).Result;
 }
 
 void ListAllTasks()

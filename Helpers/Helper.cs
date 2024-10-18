@@ -20,7 +20,7 @@ namespace Task_CLI.Helpers
 
         internal static void PrintCommandMessage(string message)
         {
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\n" + message + "\n");
             Console.ResetColor();
         }

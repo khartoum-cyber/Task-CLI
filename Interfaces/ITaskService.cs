@@ -10,5 +10,6 @@ namespace Task_CLI.Interfaces
         Task<bool> DeleteTask(int id);
         Task<List<CliTask>> ListAllTasks();
         Task<List<CliTask>> GetTaskByStatus(string status);
+        Task<bool> SetTaskStatus(string status, int id);
     }
 }

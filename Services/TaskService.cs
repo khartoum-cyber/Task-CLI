@@ -132,7 +132,10 @@ namespace Task_CLI.Services
                 throw ex;
             }
         }
-
+        public Task<bool> SetTaskStatus(string status, int id)
+        {
+            throw new NotImplementedException();
+        }
         public Task<List<CliTask>> GetTaskByStatus(string status)
         {
             if (!File.Exists(FilePath))
@@ -238,5 +241,6 @@ namespace Task_CLI.Services
                 return false;
             }
         }
+
     }
 }
