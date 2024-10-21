@@ -168,29 +168,24 @@ namespace Task_CLI.Services
         }
         public Task<List<CliTask>> GetTaskByStatus(string status)
         {
-            try
+            
+            
+            if (!File.Exists(FilePath))
             {
-                if (!File.Exists(FilePath))
-                {
-                    return Task.FromResult(new List<CliTask>());
-                }
-
-                string jsonString = File.ReadAllText(FilePath);
-
-                if (!string.IsNullOrEmpty(jsonString))
-                {
-                    var tasks = JsonSerializer.Deserialize<List<CliTask>>(jsonString);
-                    var statusToCheck = ChangeStatus(status);
-                    return Task.FromResult(tasks?.Where(x => x.TaskStatus == statusToCheck).ToList() ??
-                                           new List<CliTask>());
-                }
-
                 return Task.FromResult(new List<CliTask>());
             }
-            catch (Exception ex)
+
+            string jsonString = File.ReadAllText(FilePath);
+
+            if (!string.IsNullOrEmpty(jsonString))
             {
-                throw;
+                var tasks = JsonSerializer.Deserialize<List<CliTask>>(jsonString);
+                var statusToCheck = ChangeStatus(status);
+                return Task.FromResult(tasks?.Where(x => x.TaskStatus == statusToCheck).ToList() ??
+                                       new List<CliTask>());
             }
+
+            return Task.FromResult(new List<CliTask>());
         }
 
         private Status GetStatusToDisplay(string status) => status switch

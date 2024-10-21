@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System.Data;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.Extensions.DependencyInjection;
 using Task_CLI.Helpers;
 using Task_CLI.Interfaces;
@@ -64,6 +65,10 @@ while (true)
             SetTaskStatus();
             break;
 
+        case "clear":
+            Clear();
+            break;
+
         case "exit":
             exit = true;
             break;
@@ -77,6 +82,8 @@ while (true)
         break;
     }
 }
+
+void Clear() => Console.Clear();
 
 void SetTaskStatus()
 {
