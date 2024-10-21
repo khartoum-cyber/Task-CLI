@@ -36,10 +36,6 @@ while (true)
             HelpMessage();
             break;
 
-        case "exit":
-            exit = true;
-            break;
-
         case "add":
             AddNewTask();
             break;
@@ -68,8 +64,12 @@ while (true)
             SetTaskStatus();
             break;
 
-            //default:
-            //    break;
+        case "exit":
+            exit = true;
+            break;
+
+        default:
+            break;
     }
 
     if (exit)

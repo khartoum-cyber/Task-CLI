@@ -168,29 +168,44 @@ namespace Task_CLI.Services
         }
         public Task<List<CliTask>> GetTaskByStatus(string status)
         {
-            if (!File.Exists(FilePath))
+            try
             {
+                if (!File.Exists(FilePath))
+                {
+                    return Task.FromResult(new List<CliTask>());
+                }
+
+                string jsonString = File.ReadAllText(FilePath);
+
+                if (!string.IsNullOrEmpty(jsonString))
+                {
+                    var tasks = JsonSerializer.Deserialize<List<CliTask>>(jsonString);
+                    var statusToCheck = ChangeStatus(status);
+                    return Task.FromResult(tasks?.Where(x => x.TaskStatus == statusToCheck).ToList() ??
+                                           new List<CliTask>());
+                }
+
                 return Task.FromResult(new List<CliTask>());
             }
-
-            string jsonString = File.ReadAllText(FilePath);
-
-            if (!string.IsNullOrEmpty(jsonString))
+            catch (Exception ex)
             {
-                var tasks = JsonSerializer.Deserialize<List<CliTask>>(jsonString);
-                var statusToCheck = GetStatusToDisplay(status);
-                return Task.FromResult(tasks?.Where(x => x.TaskStatus == statusToCheck).ToList() ?? new List<CliTask>());
+                throw;
             }
-
-            return Task.FromResult(new List<CliTask>());
         }
 
         private Status GetStatusToDisplay(string status) => status switch
         {
-            "mark-todo" => Status.ToDo,
             "mark-in-progress" => Status.InProgress,
             "mark-done" => Status.Done,
+            "mark-todo" => Status.ToDo,
             _ => Status.ToDo
+        };
+
+        private Status ChangeStatus(string status) => status switch
+        {
+            "in-progress" => Status.InProgress,
+            "done" => Status.Done,
+            "todo" => Status.ToDo
         };
 
         private static void UpdateJsonFile(Task<List<CliTask>> tasksFromJson)
