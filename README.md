@@ -41,7 +41,7 @@ After welcome message, start interacting with application using commands:
 + exit: Exits the application.
 
 ```
-**add** "Learn C#"
+__add__ "Learn C#"
 Task added successfully with Id : 1
 
 **add** "Learn EF Core"
