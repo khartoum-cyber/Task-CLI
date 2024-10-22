@@ -37,27 +37,27 @@ After welcome message, start interacting with application using commands:
 + mark-todo [id]: Marks the task with the given ID as "To-Do".
 + mark-in-progress [id]: Marks the task with the given ID as "In-Progress".
 + mark-done [id]: Marks the task with the given ID as "Done".
-+ clear: Clears the console and redisplays the welcome message.
++ clear: Clears the console.
 + exit: Exits the application.
 
 ```
-__add__ "Learn C#"
+add "Learn C#"
 Task added successfully with Id : 1
 
-**add** "Learn EF Core"
+add "Learn EF Core"
 Task added successfully with Id : 2
 
-**list**
+list
 Task Id          Description                         Status          Created Date    
 1                Learn C#                            todo            22-10-2024
 2                Learn EF Core                       todo            22-10-2024
 
-**mark-inprogress** 2
+mark-inprogress 2
 Task status set successfully with Id : 2
 
-**list** in-progress
+list in-progress
 Task Id          Description                         Status          Created Date   
 2                Learn EF Core                       in-progress     22-10-2024
 
-**exit**
+exit
 ```
