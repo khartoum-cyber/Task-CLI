@@ -41,5 +41,23 @@ After welcome message, start interacting with application using commands:
 + exit: Exits the application.
 
 ```
-'add' "Learn C#"
+**add** "Learn C#"
+Task added successfully with Id : 1
+
+**add** "Learn EF Core"
+Task added successfully with Id : 2
+
+**list**
+Task Id          Description                         Status          Created Date    
+1                Learn C#                            todo            22-10-2024
+2                Learn EF Core                       todo            22-10-2024
+
+**mark-inprogress** 2
+Task status set successfully with Id : 2
+
+**list** in-progress
+Task Id          Description                         Status          Created Date   
+2                Learn EF Core                       in-progress     22-10-2024
+
+**exit**
 ```
